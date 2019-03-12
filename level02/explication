@@ -1,1 +1,5 @@
-te
+en analysant le code, on voie que le pass est stocké sur la stack
+grace l'appel au read, on va donc analyser la stack afin de trouver
+ou est stocké cette information.
+Pour cela on utilise un script qui va afficher les 50 premieres occurence sur la stack ce qui nous permet de trouver entre la 22 et la 26 eme occurence sur la stack un format qui semble correspondre.
+Du fait qu'on soit big endian on convertie en little endian et de la on convertie l'ensemble de l'hexadecimal a leur valeur ascii ce qui nous donne bien le pass pour le prochain level 
