@@ -1,4 +1,4 @@
-int auth(char login, int serial)
+int auth(char *login, int serial)
 {
 	*(login + strcspn(login, "\n")) = '\0';
 	int len = strnlen(login, 32);
@@ -36,8 +36,8 @@ int main()
     puts("***** NEW ACCOUNT DETECTED ********");
     puts("***********************************");
     printf("-> Enter Serial: ");
-    scanf(serial);
-    if (auth(login, serial) == 0)
+    scanf(&serial);
+    if (auth(&login, &serial) == 0)
     {
             puts("Authenticated!");
             system("/bin/sh");

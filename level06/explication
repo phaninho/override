@@ -1,0 +1,29 @@
+ce programme demande un login qui doit etre superieur a 5 char.
+Ensuite on nous demande un numero.
+Le login est pris en reference afin d'operer un calcul qui servira de valeur de
+comparaison avec le numero de serie que nous avons entré, C'est a dire que chaque
+login entree donne une numero d'acces different.
+Afin de passer ce niveau il faut regarder la comparaison qui est effectué a
+auth+286 et si elle est egale la fonction retournera 0 ce qui nous ouvrira un shell.
+
+Premiere etape est de passer le ptrace qui systematiquement nous fait quitter le
+programme. Dans GDB nous avons entré a la main l'adresse de l'instruction suivante afin
+de permettre de continuer l'execution.
+
+Nous arrivons bien a la comparaison effectué entre notre numero de serie et celui attendue et on peut voir que pour un login "bonjour" le numero de serie "6233767"
+est attendue.
+
+
+    >b *0x080487bd
+    >run
+        login:bonjour
+        serial:11111111
+
+    >set $eip=0x080487ed
+        ....
+
+ 0x8048866 <auth+286>:	cmp    eax,DWORD PTR [ebp-0x10]
+    >x $ebp-0x10
+        0xffffd688:	0x005f1ea7
+
+        0x005f1ea7= 6233767
