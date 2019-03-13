@@ -1,0 +1,7 @@
+pour passer ce niveau il faut entrer le bon mot de passe qui nous donnera acces a un shell.
+la fonction test en gros fait une soustraction entre 0x1337D00D (322424845) et la valeur entree. Si la difference est < 21 on entre dans la fonction decrypt.
+Dans la fonction decrypt la string "Q}|u`sfg~sf{}|a3n" est prise en reference lors d'un XOR et le resultat attendue doit donner "Congratulations!" qui ouvrira un shell.
+
+On a realisé un script qui tests toutes les combinaisons de soustraction comprise entre 0 et 21. il s'avere que c'est la soustractionpar 18 qui nous permet de passer les test et ouvrir le shell.
+
+le nombre a entrer est donc 322424827
