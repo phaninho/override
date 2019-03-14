@@ -1,28 +1,26 @@
-int read_number(int arg0) {
+int read_number(int num)
+{
     printf(" Index: ");
-    eax = get_unum();
-    printf(" Number at data[%u] is %u\n", eax, *((eax << 0x2) + arg0));
-    return 0x0;
+    Unum = get_unum();
+    printf(" Number at data[%u] is %u\n", Unum, *((Unum << 2) + num));
+    return 0;
 }
 
-int store_number(int arg0)
+int store_number(int num)
 {
-    var_4 = arg0;
     printf(" Number: ");
-    var_10 = get_unum();
+    Unum1 = get_unum();
     printf(" Index: ");
-    var_C = get_unum();
-    if ((var_C != (HIDWORD(var_C * 0xaaaaaaab) >> 0x1) + (HIDWORD(var_C * 0xaaaaaaab) >> 0x1) + (HIDWORD(var_C * 0xaaaaaaab) >> 0x1)) && (var_10 >> 0x18 != 0xb7)) {
-            *((var_C << 0x2) + var_4) = var_10;
-            eax = 0x0;
+    Unum2 = get_unum();
+    if ((Unum2 != (HIDWORD(Unum2 * 2863311531) >> 1) + (HIDWORD(Unum2 * 2863311531) >> 1) + (HIDWORD(Unum2 * 2863311531) >> 1)) && (Unum1 >> 24 != 183))
+    {
+        *((Unum2 << 2) + num) = Unum1;
+        return 0;
     }
-    else {
-            puts(" *** ERROR! ***");
-            puts("   This index is reserved for wil!");
-            puts(" *** ERROR! ***");
-            eax = 0x1;
-    }
-    return eax;
+    puts(" *** ERROR! ***");
+    puts("   This index is reserved for wil!");
+    puts(" *** ERROR! ***");
+    return 1;
 }
 
 int main()
@@ -55,5 +53,5 @@ int main()
     *(&cmd + 12) = 0;
     *(&cmd + 16) = 0;
     ret = read_number(&num);
-    return sotre_ret;
+    return ret;
 }
