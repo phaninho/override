@@ -1,3 +1,25 @@
+void clear_stdin()
+{
+    do
+    {
+        char c = getchar();
+        if (c == 10)
+            break;
+        if (c == 255)
+            break;
+    } while (true);
+    return;
+}
+
+int get_unum()
+{
+    fflush(*stdout@@GLIBC_2.0);
+    scanf(var);
+    clear_stdin();
+    return 0;
+}
+
+
 int read_number(int num)
 {
     printf(" Index: ");
