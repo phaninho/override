@@ -16,27 +16,27 @@ int get_unum()
     fflush(*stdout@@GLIBC_2.0);
     scanf(var);
     clear_stdin();
-    return 0;
+    return var;
 }
 
 
-int read_number(int num)
+int read_number(int array)
 {
     printf(" Index: ");
-    Unum = get_unum();
-    printf(" Number at data[%u] is %u\n", Unum, *((Unum << 2) + num));
+    index = get_unum();
+    printf(" Number at data[%u] is %u\n", index, *((index * 4) + array));
     return 0;
 }
 
-int store_number(int num)
+int store_number(int *array)
 {
     printf(" Number: ");
-    Unum1 = get_unum();
+    number = get_unum();
     printf(" Index: ");
-    Unum2 = get_unum();
-    if ((Unum2 != (HIDWORD(Unum2 * 2863311531) >> 1) + (HIDWORD(Unum2 * 2863311531) >> 1) + (HIDWORD(Unum2 * 2863311531) >> 1)) && (Unum1 >> 24 != 183))
+    index = get_unum();
+    if ((index != (index * 2863311531) / 2) && (number / 16777216 != 183))
     {
-        *((Unum2 << 2) + num) = Unum1;
+        *((index * 4) + array) = number;
         return 0;
     }
     puts(" *** ERROR! ***");
@@ -48,32 +48,21 @@ int store_number(int num)
 int main()
 {
     puts("----------------------------------------------------\n  Welcome to wil's crappy number storage service!   \n----------------------------------------------------\n Commands:                                          \n    store - store a number into the data sto…");
-    printf("Input command: ");
-    fgets(0, 20, stdin);
-    *(int8_t *)(esp + (!ecx - 0x2) + 0x1b8) = 0x0;
-    if (sign_extend_32((COND_BYTE_SET(G)) - (COND ? 1 : 0)) != 0)
+    while (true)
     {
-        if (sign_extend_32((COND_BYTE_SET(G)) - (COND ? 1 : 0)) != 0)
-        {
-            if (sign_extend_32((COND_BYTE_SET(G)) - (COND ? 1 : 0)) == 0)
-            {
-                ret = 0;
-                esi = var_10 ^ * 20;
-                if (esi != 0)
-                    ret = __stack_chk_fail();
-            }
-        }
+        ret = 0;
+        printf("Input command: ");
+        fgets(buf, 20, stdin);
+        if (!strcmp(buf, "store"))
+            ret = store_number(&array);
+        else if (!strcmp(buf, "read"))
+            ret = read_number(&array);
+        else if (strcmp(buf, "quit"))
+            return 0;
+        if (ret != 0)
+            printf(" Failed to do %s command\n", &cmd);
+        else
+            printf(" Completed %s command successfully\n", &cmd);
     }
-    ret = store_number(&num);
-    if (ret != 0)
-        printf(" Failed to do %s command\n", &cmd);
-    else
-        printf(" Completed %s command successfully\n", &cmd);
-    cmd = 0;
-    *(&cmd + 4) = 0;
-    *(&cmd + 8) = 0;
-    *(&cmd + 12) = 0;
-    *(&cmd + 16) = 0;
-    ret = read_number(&num);
     return ret;
 }
