@@ -1,13 +1,12 @@
 int log_wrapper(int log_fd, int src, int format)
 {
     strcpy(str, src);
-    rcx = 0xffffffffffffffff;
-    asm { repne scasb al, byte [rdi] };
-    r8 = (254 - !rcx) + 1;
-    rcx = 0xffffffffffffffff;
-    asm { repne scasb al, byte [rdi] };
-    snprintf(str + (!rcx - 1), r8, format);
-    rax = strcspn(str, "\n");
+    // rcx = 0xffffffffffffffff;
+    // asm { repne scasb al, byte [rdi] };
+    size = (254 - !rcx) + 1;
+    // asm { repne scasb al, byte [rdi] };
+    snprintf(str + (!rcx - 1), size, format);
+    rax = strcspn(str, "\n");       //return len de str sans \n
     *(int8_t *)(rbp + (rax - 272)) = 0;
     fprintf(log_fd, "LOG: %s\n", str);
     rax = 40 ^ 40;
@@ -19,7 +18,7 @@ int log_wrapper(int log_fd, int src, int format)
 int main(int ac, int av)
 {
     if (ac != 2)
-        printf("Usage: %s filename\n", *av);
+        printf("Usage: %s filename\n", av[1]);
     log_fd = fopen("./backups/.log", w);
     if (log_fd == 0)
     {
