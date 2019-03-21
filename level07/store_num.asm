@@ -19,7 +19,7 @@ Dump of assembler code for function store_number:
    0x0804866e <+62>:	mov    ecx,DWORD PTR [ebp-0xc]                 ;   ECX=4
    0x08048671 <+65>:	mov    edx,0xaaaaaaab
    0x08048676 <+70>:	mov    eax,ecx                                 ;   EAX=4  ECX=4
-   0x08048678 <+72>:	mul    edx                                     ;   EDX=2  EAX*EDX [4 * 0xaaaaaaab = 0x2aaaaaaac] (EDX=0x2 EAX=0xaaaaaaac)
+   0x08048678 <+72>:	mul    edx                                     ;   EDX=2  EAX=0xaaaaaaac EAX*EDX [4 * 0xaaaaaaab = 0x2aaaaaaac] (EDX=0x2 EAX=0xaaaaaaac)
                                                                        ;      -EDX conserve la partie haute du resultat et EAX le reste
    0x0804867a <+74>:	shr    edx,1                                   ;   EDX=1  2 >> 2 = 2/2 = 1
                                                                        ;      -decallage de 1 bit vers la droite sur EDX, reviens a  EDX/2
