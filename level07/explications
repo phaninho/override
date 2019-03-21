@@ -1,0 +1,54 @@
+Ce programme permet de stocker des nombres en precisant l'index et de lire ces nombres.
+ecrire sur un index qui a un  multiple de 3 n'est pas permis. l'astuce pour contourner
+cette restriction sera d'ajouter 0x100000000 a l'index desire tout en tenant compte
+de la taille d'un int. ce qui donnera  index = (0x100000000 + (index * 4)) / 4
+
+Dans l'idee ce que nous cherchons a faire est le meme principe qu'utilisé dans d'autres
+exercixes, c'est a dire faire appel a system qui executera /bin/sh, ce qui donnera en
+memoire:
+        | address_system | valeur_sans_influence | address_/bin/sh |
+
+les adresses de system et de /bin/sh sont trouvés grace a gdb
+
+    system:  0xf7e6aed0
+    /bin/sh: 0xf7f897ec
+
+Lorsqu'on entre l'index, la seule verification faite concerne le multiple de 3, a
+part ca, il n'y a aucune protection de faite, concretement on peut ecrire n'importe ou
+dans la memoire.
+Il faut maintenant trouver l'index qui nous permettra de faire appel a system.
+
+Dans le main+717 pop ebp
+     et main+718 ret
+
+Jusque la EBP pointe sur une addresse pointant vers une valeur qui est la derniere
+contenu dans l'espace alloué pour entrer les nombres. pop assigne a EBP
+la valeur pointe par l'adresse et cette valeur se retrouve sortie de la stack,
+ce qui fait que l'instruction suivante sur la stack est l'adresse sur laquelle
+le retour se fera.
+C'est cette faille que nous allons exploiter.
+
+En stockant une valeur a l'index 1 on peu voir le resultat stocké a l'adresse
+0xffffd538. l'index 0 n'est pas accessible mais nous le prendrons en consideration
+lor du calculs a venir.
+EBP pointe sur 0xffffd6f8
+    (0xffffd6f8 - 0xffffd534) / 4 = 113
+
+A present, nous connaisons le dernier index celui qui est pop lors de main+717
+C'est donc l'index suivant qu'il faut viser (index 114) car ca sera l'adresse
+utilisée par le retour de main.
+
+l'index 114 n'est pas accessible pour cause d'etre un multiple de 3.
+On utilise donc le fait qu'au final seul 4 bits seront utilisé pour indiquer
+la valeur de l'index tandis que la comparaison a un multiple de 3 est effectué sur
+la valeur en entree qui elle sera sur 16 bits.
+
+    index = (0x100000000 + (114 * 4)) / 4
+    index = 1073741938
+
+A l'index 114 on va appeller system, l'index suivant restera tel qu'il est car il
+contient la valeur 1 qui n'influera pas sur la suite et en index 116 on appellera
+/bin/sh.
+
+ce qui donne:
+    python -c 'print "store\n4159090384\n1073741938\n" + "store\n4160264172\n116\n" + "quit"' > /tmp/exploit
