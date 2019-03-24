@@ -1,7 +1,7 @@
 On a besoin d'entrer le bon user_name afin de passer le premier test
 en faisant un strings du binaire on peu voir "dat_wil" qui permet de passer a
 l'etape du mot de passe.
-lors du test du mo de passe on peu provoquer un buffer overflow et donc ecrire
+lors du test du mot de passe on peu provoquer un buffer overflow et donc ecrire
 sur la stack l'adresse ou l'on veux sauter.
 on a exporté un shellcode dans une variable d'environement qu'on va appelé grace
 a l'overflow
